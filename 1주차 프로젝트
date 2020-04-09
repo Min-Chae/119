@@ -1,0 +1,845 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include <stdbool.h>
+#include <time.h>
+
+int i,j;
+int main_exit;
+void menu();
+int atm();
+void close();
+struct date{
+    int month,day,year;
+
+    };
+struct {
+
+    char name[60];
+    int acc_no,age;
+    char address[60];
+    char citizenship[15];
+    char phone[60];
+    char acc_type[10];
+    float amt;
+    struct date dob;
+    struct date deposit;
+    struct date withdraw;
+
+    }add,upd,check,rem,transaction;	// add(계좌생성),upd(업데이트), rem(계좌삭제), transaction(계좌 간 거래)
+
+float interest(float t,float amount,int rate)
+{
+    float SI;
+    SI=(rate*t*amount)/100.0;
+    return (SI);
+
+}
+void fordelay(int j)
+{   int i,k;
+    for(i=0;i<j;i++)
+         k=i;
+}
+
+
+void new_acc()
+
+{
+    int choice;
+    FILE *ptr;
+
+    ptr=fopen("record.dat","a+");
+    account_no:	
+    
+	srand(time(NULL)); 
+	int random = (rand()%9999)+1000;	// 4자리 랜덤 수 
+	check.acc_no = random; // 4자리 랜덤수를 check 에 넣어 중복 검사
+	 
+    system("cls");
+    printf("\n\t\t\t    * CREATE NEW ACCOUNT  *");
+	printf("\n\n\nEnter today's date(mm/dd/yyyy):");
+	scanf("%d/%d/%d",&add.deposit.month,&add.deposit.day,&add.deposit.year);
+    //printf("\nEnter the account number:");
+    //scanf("%d",&check.acc_no);
+    while(fscanf(ptr,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+    {
+        if (check.acc_no==add.acc_no)
+            {
+			printf("Account no. already exist!");
+            fordelay(1000000000);
+                goto account_no;
+
+            }
+    }
+    add.acc_no=check.acc_no;
+    printf("\nㄴName: ");
+    scanf("%s",add.name);
+    printf("\nㄴThe date of birth(mm/dd/yyyy): ");
+    scanf("%d/%d/%d",&add.dob.month,&add.dob.day,&add.dob.year);
+    printf("\nㄴAge: ");
+    scanf("%d",&add.age);
+    printf("\nㄴAddress: ");
+    scanf("%s",add.address);
+    printf("\nㄴCitizenship number: ");
+    scanf("%s",add.citizenship);
+    printf("\nㄴPhone number: ");
+    scanf("%s",&add.phone);
+    printf("\nㄴAmount to deposit: $");
+    scanf("%f",&add.amt);
+    printf("\nㄴType of account(Saving/Current/Fixed for 1 year/Fixed for 2 year/Fixed for 3 year): ");
+    scanf("%s",add.acc_type);
+
+    fprintf(ptr,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+
+    fclose(ptr);
+    
+    printf("--------------------------------------------------------------------\n");
+    printf("\nAccount created successfully!");
+    printf("\n>>> YOUR ACCOUNT NUMBER: %d", add.acc_no);
+    
+    add_invalid:
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit:");
+    scanf("%d",&main_exit);
+    system("cls");
+    if (main_exit==1)
+        menu();
+    else if(main_exit==0)
+            close();
+    else
+        {
+            printf("\nInvalid!\a");
+            goto add_invalid;
+        }
+}
+void view_list()
+{
+    FILE *view;
+    view=fopen("record.dat","r");
+    int test=0;
+    system("cls");
+    printf("\nACC. NO.\tNAME\t\t\tADDRESS\t\t\tPHONE\n");
+
+    while(fscanf(view,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+       {
+           printf("\n%6d\t %10s\t\t\t%10s\t\t%s",add.acc_no,add.name,add.address,add.phone);
+           test++;
+       }
+
+    fclose(view);
+    if (test==0)
+    {   
+		system("cls");
+        printf("\nNO RECORD..\n");
+        printf("\nCreate Accounts First!\n");
+	}
+
+    view_list_invalid:
+     printf("\n\nEnter 1 to go to the main menu and 0 to exit:");
+        scanf("%d",&main_exit);
+        system("cls");
+        if (main_exit==1)
+            menu();
+        else if(main_exit==0)
+            close();
+        else
+        {
+            printf("\nInvalid!\a");
+            goto view_list_invalid;
+        }
+}
+void edit(void)
+{
+    int choice,test=0;
+    FILE *old,*newrec;
+    old=fopen("record.dat","r");
+    newrec=fopen("new.dat","w");
+
+    printf("\nEnter the account no. you want to change:");
+    scanf("%d",&upd.acc_no);
+    while(fscanf(old,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)	// 문서 값을 읽어오는데 성공하면 읽어온 값의 개수 반환/ 실패 시 EOF 반환 
+    {
+        if (add.acc_no==upd.acc_no)
+        {   test=1;
+            printf("\n== Select information do you want to change ==\n1.Address\n2.Phone\n\nEnter your choice: ");
+            scanf("%d",&choice);
+            system("cls");
+            if(choice==1)
+                {printf("Enter the new address:");
+                scanf("%s",upd.address);
+                fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,upd.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                system("cls");
+                printf("Changes saved!");
+                }
+            else if(choice==2)
+                {
+                    printf("Enter the new phone number:");
+                scanf("%s",&upd.phone);
+                fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,upd.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                system("cls");
+                printf("Changes saved!");
+                }
+
+        }
+        else
+            fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+    }
+    fclose(old);
+    fclose(newrec);
+    remove("record.dat");
+    rename("new.dat","record.dat");
+
+if(test!=1)
+        {   system("cls");
+            printf("\nRecord not found!!\a\a\a");
+            edit_invalid:
+              printf("\nEnter 0 to try again,1 to return to main menu and 2 to exit:");
+              scanf("%d",&main_exit);
+              system("cls");
+                 if (main_exit==1)
+
+                    menu();
+                else if (main_exit==2)
+                    close();
+                else if(main_exit==0)
+                    edit();
+                else
+                    {printf("\nInvalid!\a");
+                    goto edit_invalid;}
+        }
+    else
+        {printf("\n\n\nEnter 1 to go to the main menu and 0 to exit:");
+        scanf("%d",&main_exit);
+        system("cls");
+        if (main_exit==1)
+            menu();
+        else
+            close();
+        }
+}
+
+void transact(void)
+{   int choice,test=0;
+    FILE *old,*newrec;
+    old=fopen("record.dat","r");
+    newrec=fopen("new.dat","w");
+
+        printf("Enter the account no. of the customer:");
+    scanf("%d",&transaction.acc_no);
+    while (fscanf(old,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+   {
+
+            if(add.acc_no==transaction.acc_no)
+            {   test=1;
+                if(strcmpi(add.acc_type,"fixed1")==0||strcmpi(add.acc_type,"fixed2")==0||strcmpi(add.acc_type,"fixed3")==0)
+                {
+                    printf("\a\a\a\n\nYOU CANNOT DEPOSIT OR WITHDRAW CASH IN FIXED ACCOUNTS!!!!!");
+                    fordelay(1000000000);
+                    system("cls");
+                    menu();
+
+                }
+                printf("\n\nDo you want to\n1.Deposit\n2.Withdraw?\n\nEnter your choice(1 for deposit and 2 for withdraw):");
+                scanf("%d",&choice);
+                if (choice==1)
+                {
+                    printf("Enter the amount you want to deposit:$ ");
+                    scanf("%f",&transaction.amt);
+                    add.amt+=transaction.amt;
+                    easter_egg();
+                    fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                    printf("\n\nDeposited successfully!");
+                }
+                else
+                {
+                    printf("Enter the amount you want to withdraw:$ ");
+                    scanf("%f",&transaction.amt);
+                    add.amt-=transaction.amt;
+                    fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                    printf("\n\nWithdrawn successfully!");
+                }
+
+            }
+            else
+            {
+               fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+            }
+   }
+   fclose(old);
+   fclose(newrec);
+   remove("record.dat");
+   rename("new.dat","record.dat");
+   if(test!=1)
+   {
+       printf("\n\nRecord not found!!");
+       transact_invalid:
+      printf("\n\n\nEnter 0 to try again,1 to return to main menu and 2 to exit:");
+      scanf("%d",&main_exit);
+      system("cls");
+      if (main_exit==0)
+        transact();
+    else if (main_exit==1)
+        menu();
+    else if (main_exit==2)
+        close();
+    else
+    {
+        printf("\nInvalid!");
+        goto transact_invalid;
+    }
+
+   }
+   else
+   {
+       printf("\nEnter 1 to go to the main menu and 0 to exit:");
+        scanf("%d",&main_exit);
+        system("cls");
+        if (main_exit==1)
+            menu();
+        else
+            close();
+   }
+
+}
+void erase(void)
+{
+    FILE *old,*newrec;
+    int test=0;
+    old=fopen("record.dat","r");
+    newrec=fopen("new.dat","w");
+    printf("Enter the account no. of the customer you want to delete:");
+    scanf("%d",&rem.acc_no);
+    while (fscanf(old,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+   {
+        if(add.acc_no!=rem.acc_no)
+            fprintf(newrec,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+
+        else
+            {test++;
+            printf("\nRecord deleted successfully!\n");
+            }
+   }
+   fclose(old);
+   fclose(newrec);
+   remove("record.dat");
+   rename("new.dat","record.dat");
+   if(test==0)
+        {
+            printf("\nRecord not found!!\a\a\a");
+            erase_invalid:
+              printf("\nEnter 0 to try again,1 to return to main menu and 2 to exit:");
+              scanf("%d",&main_exit);
+
+                 if (main_exit==1)
+                    menu();
+                else if (main_exit==2)
+                    close();
+                else if(main_exit==0)
+                    erase();
+                else
+                    {printf("\nInvalid!\a");
+                    goto erase_invalid;}
+        }
+    else
+        {printf("\nEnter 1 to go to the main menu and 0 to exit:");
+        scanf("%d",&main_exit);
+        system("cls");
+        if (main_exit==1)
+            menu();
+        else
+            close();
+        }
+
+}
+
+void see(void)
+{
+    FILE *ptr;
+    int test=0,rate;
+    int choice;
+    float time;
+    float intrst;
+    ptr=fopen("record.dat","r");
+    printf("Do you want to check by\n1.Account no\n2.Name\nEnter your choice:");
+    scanf("%d",&choice);
+    if (choice==1)
+    {   printf("Enter the account number:");
+        scanf("%d",&check.acc_no);
+
+        while (fscanf(ptr,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+        {
+            if(add.acc_no==check.acc_no)
+            {   system("cls");
+                test=1;
+
+                printf("\nAccount NO.:%d\nName:%s \nDOB:%d/%d/%d \nAge:%d \nAddress:%s \nCitizenship No:%s \nPhone number:%s \nType Of Account:%s \nAmount deposited:$ %.2f \nDate Of Deposit:%d/%d/%d\n\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,
+                add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                if(strcmpi(add.acc_type,"fixed1")==0)
+                    {
+                        time=1.0;
+                        rate=9;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+1);
+                    }
+                else if(strcmpi(add.acc_type,"fixed2")==0)
+                    {
+                        time=2.0;
+                        rate=11;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+2);
+
+                    }
+                else if(strcmpi(add.acc_type,"fixed3")==0)
+                    {
+                        time=3.0;
+                        rate=13;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+3);
+
+                    }
+                 else if(strcmpi(add.acc_type,"saving")==0)
+                    {
+                        time=(1.0/12.0);
+                        rate=8;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d of every month",intrst,add.deposit.day);
+
+                     }
+                 else if(strcmpi(add.acc_type,"current")==0)
+                    {
+
+                        printf("\n\nYou will get no interest\a\a");
+
+                     }
+
+            }
+        }
+    }
+    else if (choice==2)
+    {   printf("Enter the name:");
+        scanf("%s",&check.name);
+        while (fscanf(ptr,"%d %s %d/%d/%d %d %s %s %s %s %f %d/%d/%d",&add.acc_no,add.name,&add.dob.month,&add.dob.day,&add.dob.year,&add.age,add.address,add.citizenship,&add.phone,add.acc_type,&add.amt,&add.deposit.month,&add.deposit.day,&add.deposit.year)!=EOF)
+        {
+            if(strcmpi(add.name,check.name)==0)
+            {   system("cls");
+                test=1;
+                printf("\nAccount No.:%d\nName:%s \nDOB:%d/%d/%d \nAge:%d \nAddress:%s \nCitizenship No:%s \nPhone number:%s \nType Of Account:%s \nAmount deposited:$%.2f \nDate Of Deposit:%d/%d/%d\n\n",add.acc_no,add.name,add.dob.month,add.dob.day,add.dob.year,add.age,add.address,add.citizenship,add.phone,
+                add.acc_type,add.amt,add.deposit.month,add.deposit.day,add.deposit.year);
+                if(strcmpi(add.acc_type,"fixed1")==0)
+                    {
+                        time=1.0;
+                        rate=9;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+1);
+                    }
+                else if(strcmpi(add.acc_type,"fixed2")==0)
+                    {
+                        time=2.0;
+                        rate=11;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+2);
+
+                    }
+                else if(strcmpi(add.acc_type,"fixed3")==0)
+                    {
+                        time=3.0;
+                        rate=13;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d/%d/%d",intrst,add.deposit.month,add.deposit.day,add.deposit.year+3);
+
+                    }
+                 else if(strcmpi(add.acc_type,"saving")==0)
+                    {
+                        time=(1.0/12.0);
+                        rate=8;
+                        intrst=interest(time,add.amt,rate);
+                        printf("\n\nYou will get $.%.2f as interest on %d of every month",intrst,add.deposit.day);
+
+                     }
+                 else if(strcmpi(add.acc_type,"current")==0)
+                    {
+
+                        printf("\n\nYou will get no interest\a\a");
+
+                     }
+
+            }
+        }
+    }
+
+
+    fclose(ptr);
+     if(test!=1)
+        {   system("cls");
+            printf("\nRecord not found!!\a\a\a");
+            see_invalid:
+              printf("\nEnter 0 to try again,1 to return to main menu and 2 to exit:");
+              scanf("%d",&main_exit);
+              system("cls");
+                 if (main_exit==1)
+                    menu();
+                else if (main_exit==2)
+                    close();
+                else if(main_exit==0)
+                    see();
+                else
+                    {
+                        system("cls");
+                        printf("\nInvalid!\a");
+                        goto see_invalid;}
+        }
+    else
+        {printf("\nEnter 1 to go to the main menu and 0 to exit:");
+        scanf("%d",&main_exit);}
+        if (main_exit==1)
+        {
+            system("cls");
+            menu();
+        }
+
+        else
+           {
+
+             system("cls");
+            close();
+            }
+
+}
+
+
+void close(void)
+{
+    printf("\n\n\n\nThank you for using 한국은행!");
+    }
+
+
+void menu(void)
+{   int choice;
+    system("cls");
+    system("color 7");
+    printf("\n\n\t\t\t       >>>>> MANAGER SYSTEM <<<<<");
+    printf("\n\t\t\t\t      MAIN MENU");
+    printf("\n\n\n\n\n\t\t1. Create new account\n\t\t2. Update information of existing account\n\t\t3. For Transactions\n\t\t4. Check the details of existing account\n\t\t5. Removing existing account\n\t\t6. View customer's list\n\t\t7. Exit\n\n\n\t\t Enter your choice:");
+    scanf("%d",&choice);
+
+    system("cls");
+    switch(choice)
+    {
+        case 1:new_acc();
+        break;
+        case 2:edit();
+        break;
+        case 3:transact();
+        break;
+        case 4:see();
+        break;
+        case 5:erase();
+        break;
+        case 6:view_list();
+        break;
+        case 7:close();
+        break;
+    }
+}
+
+int main()
+{
+    char select_mode[10];	// 유저모드와 관리자 모드 선택 
+	
+	char pass_user[10],password_user[10]="1234";	// 유저비밀번호: 1234
+    char pass_manager[10],password_manager[10]="4567";	// 매니저비밀번호: 4567 
+    
+    int i=0;
+    printf("\n\n\n\t\t\t ■■■■■ 한국은행 ■■■■■\n\t\t\t   _ Bank Management System _");
+    select_mode_try: 
+    printf("\n\n\n\n\n\t\t\tSelect mode(User/Manager): ");
+    scanf("%s", select_mode);
+    if(strcmp(select_mode,"User")==0)	// 유저로그인 시, 
+	{
+    	printf("\n\t\t\tEnter the user password: ");
+    	scanf("%s",pass_user);
+    	if (strcmp(pass_user,password_user)==0)	// 문자열 비교. 비밀번호가 맞다면~ 
+        {
+			printf("\n\n\tLogin Successed!\n\tLOADING");
+        	for(i=0;i<=6;i++)
+        	{
+            	fordelay(100000000);
+            	printf(". ");
+        	}
+        	printf("\n\n");
+            system("pause");
+			system("cls");
+                
+            atm();	// user로그인 시 메뉴 
+        }
+    	else
+        {   
+			printf("\n\n\tLogin Failed\a\a\a");
+            login_try1:
+            printf("\nEnter 1 to try again and 0 to exit:");
+            scanf("%d",&main_exit);
+            
+            if (main_exit==1)
+            {
+                system("cls");
+                main();
+            }
+
+            else if (main_exit==0)
+            {
+                system("cls");
+                close();
+			}
+            else
+            {
+				printf("\nInvalid!");
+                fordelay(1000000000);
+                system("cls");
+                goto login_try1;
+			}
+
+        }
+	}
+	else
+	{
+		if(strcmp(select_mode,"Manager")==0)	// 매니저 로그인 시, 
+		{
+			printf("\n\t\t\tEnter the manager password: ");
+			scanf("%s",pass_manager);
+			if(strcmp(pass_manager,password_manager)==0)	// 문자열 비교. 비밀번호가 맞다면~ 
+        	{
+				printf("\n\n\tLogin Successed!\n\tLOADING");
+        		for(i=0;i<=6;i++)
+        		{
+            		fordelay(100000000);
+            		printf(". ");
+        		}
+        		printf("\n\n");
+            	system("pause");
+				system("cls");
+                
+            	menu();
+        	}
+    		else
+        	{   
+				printf("\n\n\tLogin Failed\a\a\a");
+            	login_try2:
+            	printf("\nEnter 1 to try again and 0 to exit:");
+            	scanf("%d",&main_exit);
+            	if (main_exit==1)
+            	{
+            	    system("cls");
+            	    main();
+            	}
+            	else if (main_exit==0)
+            	{
+                	system("cls");
+                	close();
+				}
+            	else
+            	{
+					printf("\nInvalid!");
+                	fordelay(1000000000);
+                	system("cls");
+                	goto login_try2;
+				}
+        	}
+		}
+		else	// User도 Manager도 아닌 문자를 입력했을 시 
+		{
+			printf("\nInvalid!");
+        	fordelay(1000000000);
+            system("cls");
+            goto select_mode_try;
+		}
+	}
+    return 0;
+}
+
+int atm(){
+	
+	void mainMenu();
+	void checkBalance(float balance);
+	float moneyDeposit(float balance);
+	float moneyWithdraw(float balance);
+	void menuExit();
+		void errorMessage();
+	
+    mainMenu();
+    
+    int option;
+    float balance = 15000.00;
+    int choose;
+    bool again = true;
+    
+    while (again) {
+    printf("\t\tEnter your choice:");
+    scanf("%d", &option);
+     system("CLS"); 
+    
+        switch (option) {
+            case 1:
+                checkBalance(balance);
+                break;
+            case 2:
+                balance = moneyDeposit(balance);
+                break;
+            case 3:
+                balance = moneyWithdraw(balance);
+                break;
+            case 4:
+                menuExit();
+                return 0;
+            default:
+                errorMessage();
+                break;
+        }
+       
+        printf("=================================================\n");
+        printf("Do another Action?\n");
+        printf("  1. Yes\n");
+        printf("  2. No\n");
+        scanf("%d", &choose);
+        system("CLS"); 
+        
+        if (choose == 2) 
+		{
+            again = false;
+            menuExit();   
+        }
+		else
+		{
+        	mainMenu();
+		}
+}
+    return 0;
+    
+}
+
+void mainMenu() // User 메인메뉴 
+{
+    
+    printf("\n\n\t\t\t       >>>>> CUSTOMER SYSTEM <<<<<");
+    printf("\n\t\t\t\t        MAIN MENU");
+    printf("\n\n\n\t\t 1.  Check Balance\n");
+    printf("\t\t 2.  Deposit\n");
+    printf("\t\t 3.  Withdraw\n");
+    printf("\t\t 4.  Exit\n\n");
+    
+}
+
+void checkBalance(float balance) // 잔금확인 
+{
+	printf("\n\n\t\t\t       * CHECK BALANCE *");
+    printf("\n\n\n\t\t\tAvailable Balance:   $%.2f\n\n", balance);
+}
+
+float moneyDeposit(float balance) // 입금 
+{
+	
+    float deposit;
+	printf("\n\n\t\t\t       * DEPOSIT *");
+    printf("\n\n\n\t\t\tAvailable Balance: $%.2f\n\n", balance);
+    printf("\n=================================================");
+    printf("\n\tEnter your amount to Deposit: ");
+    scanf("%f", &deposit);
+    
+    balance += deposit;
+    
+    printf("\tNow Your Available Balance is:   $%.2f\n\n", balance);
+    return balance;
+    
+}
+
+float moneyWithdraw(float balance) 
+{
+	
+    float withdraw;
+    bool back = true;
+    
+	printf("\n\n\t\t\t       * WITHDRAW *");
+    printf("\n\n\n\t\t\tAvailable Balance: $%.2f\n\n", balance);
+    printf("\n=================================================");
+    
+    while (back) {
+    printf("\n\tEnter your amount to withdraw: ");
+    scanf("%f", &withdraw);
+    
+    
+    if (withdraw < balance) 
+	{
+        back = false;
+        balance -= withdraw;
+    	printf("\tNow Your Available Balance is:   $%.2f\n\n", balance);
+        
+    }
+    
+        else  
+		{
+        
+        	printf("!!!You don't have enough money!!!\n");
+        	printf("\t(Available Balance:   $%.2f)\n\n", balance);
+    
+    	}
+    }
+    return balance;
+    
+    
+}//money withdraw
+
+void menuExit() {
+    printf("\nThank you for using 한국은행! \n\n");
+}//exit menu
+
+void errorMessage() {;
+    printf("Invalid! \n\n");
+}
+
+void easter_egg()
+{
+	if(transaction.amt == 5959){
+	printf("                                                       \n");
+	printf("                                    ■■               \n");
+	printf("                                    ■■               \n");
+	printf("                                    ■■               \n");	
+	printf("                                    ■■               \n");	
+	printf("                                    ■■               \n");	
+	printf("                                    ■■■■■■       \n");	
+	printf(" ■■■■             ■■■■      ■■    ■■       \n");
+	printf(" ■■■■             ■■■■      ■■    ■■       \n");
+	printf(" ■■■■             ■■■■      ■■■■■■       \n");
+	printf(" ■■■■             ■■■■      ■■    ■■       \n");
+	printf("                                    ■■    ■■       \n");
+	printf("             ■■                   ■■■■■■       \n");
+	printf("         ■■    ■■               ■■    ■■       \n");
+	printf("     ■■            ■■           ■■    ■■       \n");
+	printf("         ■■    ■■               ■■■■■■       \n");
+	printf("             ■■                   ■■    ■■       \n");
+	printf("                                    ■■    ■■       \n");
+	printf("                                    ■■■■■■       \n");
+	printf("                                                       \n");
+	printf("              Get Allowance! +50000                    \n");
+	add.amt += 50000;
+    }
+    
+	if(transaction.amt == 7777){
+	printf("                                                       \n");
+	printf("                                                       \n");
+	printf("                                                       \n");
+	printf(" ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
+	printf(" ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
+	printf(" ■■      ■■  ■■      ■■  ■■      ■■        \n");	
+	printf(" ■■      ■■  ■■      ■■  ■■      ■■        \n");	
+	printf(" ■■      ■■  ■■      ■■  ■■      ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("           ■■            ■■            ■■        \n");
+	printf("                                                       \n");
+	printf("                                                       \n");
+	printf("                 Lucky! +10000                         \n");
+	add.amt += 10000;
+    }
+}
