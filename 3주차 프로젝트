@@ -57,7 +57,7 @@ void map()
     
 	int how = 0;
 	
-	printf("\t\t\t\t\t 지뢰의 갯수를 입력하세요: ");
+	printf("\t\t\t\t\t 지뢰의 수를 입력하세요: ");
     scanf("%d", &how);
     
     if(how == 7 || how == 77)
@@ -78,6 +78,7 @@ void map()
 	}
 	// 랜덤하게 지뢰 설정
 	
+	
 	system("cls");
 	
 	for(int i = 1; i <= 50; i++)
@@ -91,7 +92,8 @@ void map()
         else
         i--;
 	}
-	//랜덤하게 힌트 설정	
+	//랜덤하게 힌트 설정
+        
 } 
 
 
@@ -102,6 +104,42 @@ void game()
     
 	while(1)
     {
+    	int end = 0;
+        
+        for(int y=1;y<=10;y++)
+        {
+        	for(int x=1;x<=10;x++)
+            {
+        	if (a[x][y] == 2 || a[x][y] == 1)
+        	end++;
+            }
+		}
+    
+        if (end == 100){
+        system("cls");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        printf("clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!clear!\n");
+        
+        break;
+        }
+		//게임 종료
+		
+	
 	    printf("\t\t\t\t\t   0 1 2 3 4 5 6 7 8 9\n");
 	    
 	    int count = 0;
@@ -151,6 +189,7 @@ void game()
         }
         printf("\n");
         
+        
         int xiin;
         printf("\t\t\t\t\t x축 좌표 : ");
         scanf("%d",&xiin);
@@ -162,12 +201,15 @@ void game()
 		yin = yiin + 1;
 		 
 		system("cls"); 
+		// 좌표 입력 
+		 
 		 
 		if (a[xin][yin] != 1)
 		{
         a[xin][yin] = 2;
         }
         //열어본 칸 
+        
         
         if(a[xin][yin] == 2)
         {
@@ -177,6 +219,7 @@ void game()
     	    continue; 
      	}
      	// 지뢰 X 
+	
 	
         if(a[xin][yin] == 1)
         {    
