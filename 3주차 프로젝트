@@ -16,6 +16,7 @@ void easter_egg();
  
  
 int bombsum(int i, int j)
+
 {
     int sum = 0;
     
@@ -72,6 +73,20 @@ void game()
 	// 랜덤하게 지뢰 설정
 	
 	system("cls");
+	
+	
+	for(int i=1; i<=50; i++)
+    {
+		int x = rand()%10;
+		int y = rand()%10; 
+		
+        if(a[x][y] == 0) 
+        a[x][y] = 2;
+        
+        else if(a[x][y] == 2)
+        i--;
+	}
+	
 	 
 	while(1)
     {
@@ -154,8 +169,25 @@ void game()
      	// 지뢰 X 
 	
         if(a[xin][yin] == 1)
-        {
-            printf("Bomb!\n");
+        {    
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            printf("Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!Bomb!\n");
+            
             break; 
         }
         // 지뢰 O 
@@ -168,7 +200,7 @@ void game()
 void instruction()
 {
 	printf("\t\t\t\t\t ●게임을 시작하기 전 지뢰의 개수를 입력\n");
-	printf("\t\t\t\t\t ●(맵의 크기는 10 x 10)\n");
+	printf("\t\t\t\t\t ●(맵의 크기는 10 x 10 이고 처음 힌트는 50개\n");
     printf("\t\t\t\t\t ●X좌표와 Y좌표를 차례대로 입력하면\n");
     printf("\t\t\t\t\t ●해당 좌표 근처에 있는 지뢰만큼 숫자가 표시\n\n");
     printf("\t\t\t\t\t → 메뉴로 돌아가려면 0 입력\n"); 
