@@ -4,19 +4,20 @@
 #include<time.h>
 
 
-int a[10][10]={0}; // 맵 
-int x,y; // 지뢰 
+int a[100][100]={0}; // 맵 
+int x,y; // 지뢰 좌표 
 int xin,yin; // 좌표 
 
 
 int bombsum();
+void map();
 void game();
 void instruction();
 void easter_egg();
+
  
  
 int bombsum(int i, int j)
-
 {
     int sum = 0;
     
@@ -49,56 +50,68 @@ int bombsum(int i, int j)
 // 지뢰 개수 표시
 
 
-void game()
+
+void map()
 {
-	srand(time(0));
-	
+    srand(time(0));
+    
 	int how = 0;
+	
 	printf("\t\t\t\t\t 지뢰의 갯수를 입력하세요: ");
     scanf("%d", &how);
     
     if(how == 7 || how == 77)
     easter_egg();
    
-    for(int i=1; i<=how; i++)
+    else
+    for(int i = 1; i <= how; i++)
     {
-		int x = rand()%10;
-		int y = rand()%10; 
+    
+		int x = rand()%10+1;
+		int y = rand()%10+1; 
 		
-        if(a[x][y] == 1) 
-        i--;
-        
+        if(a[x][y] != 1) 
         a[x][y] = 1;
+        
+        else
+        i--;
 	}
 	// 랜덤하게 지뢰 설정
 	
 	system("cls");
 	
-	
-	for(int i=1; i<=50; i++)
+	for(int i = 1; i <= 50; i++)
     {
-		int x = rand()%10;
-		int y = rand()%10; 
+		int x = rand()%10+1;
+		int y = rand()%10+1; 
 		
         if(a[x][y] == 0) 
         a[x][y] = 2;
         
-        else if(a[x][y] == 2)
+        else
         i--;
 	}
-	
-	 
+	//랜덤하게 힌트 설정	
+} 
+
+
+
+void game()
+{	 
+    map();
+    
 	while(1)
     {
 	    printf("\t\t\t\t\t   0 1 2 3 4 5 6 7 8 9\n");
 	    
 	    int count = 0;
 	    
-        for(y=0;y<10;y++)
+        for(y=1;y<=10;y++)
         {
     	
         	printf("\t\t\t\t\t %d", count);
-            for(x=0;x<10;x++)
+        	
+            for(x=1;x<=10;x++)
             { 
                 if(a[x][y] == 0)
                     printf("●");
@@ -138,11 +151,15 @@ void game()
         }
         printf("\n");
         
+        int xiin;
         printf("\t\t\t\t\t x축 좌표 : ");
-        scanf("%d",&xin);
+        scanf("%d",&xiin);
+        xin = xiin + 1;
         
+        int yiin;
         printf("\t\t\t\t\t y축 좌표 : ");
-        scanf("%d",&yin);
+        scanf("%d",&yiin);
+		yin = yiin + 1;
 		 
 		system("cls"); 
 		 
@@ -152,13 +169,6 @@ void game()
         }
         //열어본 칸 
         
-        if(xin<0||xin>9||yin<0||yin>9)
-        {
-            printf("\t\t\t\t\tError! \n\n");
-            continue;
-        }
-        // 에러
-		 
         if(a[xin][yin] == 2)
         {
         	int bomb;
@@ -191,22 +201,26 @@ void game()
             break; 
         }
         // 지뢰 O 
-		
+        
 	}
 }
 //게임 실행 
 
 
+
 void instruction()
 {
-	printf("\t\t\t\t\t ●게임을 시작하기 전 지뢰의 개수를 입력\n");
-	printf("\t\t\t\t\t ●(맵의 크기는 10 x 10 이고 처음 힌트는 50개\n");
+	printf("\t\t\t\t\t ●게임을 시작하기 전 지뢰의 개수를 입력(0 ~ 50)\n");
+	printf("\t\t\t\t\t ●(맵의 크기는 10 x 10 이고 처음 힌트는 50개)\n");
     printf("\t\t\t\t\t ●X좌표와 Y좌표를 차례대로 입력하면\n");
     printf("\t\t\t\t\t ●해당 좌표 근처에 있는 지뢰만큼 숫자가 표시\n\n");
+    
+    
     printf("\t\t\t\t\t → 메뉴로 돌아가려면 0 입력\n"); 
-	printf("\t\t\t\t\t → 종료하려면 아무 키나 입력");
+	printf("\t\t\t\t\t → 종료하려면 아무 키나 입력\n");
 }
 //게임 설명
+
 
 
 void easter_egg()
@@ -219,6 +233,7 @@ void easter_egg()
 	printf("                                                                 \n");
 	printf("                                                                 \n");
 	printf("                                                                 \n");
+	printf("                                                                 \n");	
 	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
 	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
 	printf("\t\t\t\t\t ■■      ■■  ■■      ■■  ■■      ■■        \n");	
@@ -232,6 +247,7 @@ void easter_egg()
 	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
 	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
 	printf("                                                                 \n");
+	printf("                                                                 \n");	
 	printf("                                                                 \n");
     }
     
@@ -241,6 +257,7 @@ void easter_egg()
 // 이스터에그
  
 
+
 int main()
 {
     int choice;
@@ -248,7 +265,6 @@ int main()
 	printf("\t\t\t\t\t-------------지뢰 찾기------------\n");
 	printf("\t\t\t\t\t                                  \n");
 	printf("\t\t\t\t\t                                  \n");
-	printf("\t\t\t\t\t-----------0. 순위 보기-----------\n"); 
 	printf("\t\t\t\t\t-----------1. 게임 시작-----------\n");
 	printf("\t\t\t\t\t-----------2. 게임 설명-----------\n");
 	printf("\t\t\t\t\t-----------3. 게임 종료-----------\n\n\t\t\t\t\t");
@@ -258,6 +274,7 @@ int main()
 	
     switch(choice)
     {
+    	
     case 1:
     	game();
         break;
@@ -278,5 +295,6 @@ int main()
 	    break; 
   
     return 0;
+    
 	}
 }
