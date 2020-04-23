@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<time.h>
 
+
 int a[10][10]={0}; // 맵 
 int x,y; // 지뢰 
 int xin,yin; // 좌표 
@@ -17,22 +18,31 @@ void easter_egg();
 int bombsum(int i, int j)
 {
     int sum = 0;
+    
     if(a[i-1][j-1] == 1)
     sum++;
+    
     if(a[i-1][j] == 1)
     sum++;
+    
     if(a[i-1][j+1] == 1)
     sum++;
+    
     if(a[i][j-1] == 1)
     sum++;
+    
     if(a[i][j+1] == 1)
     sum++;
+    
     if(a[i+1][j-1] == 1)
     sum++;
+    
     if(a[i+1][j] == 1)
     sum++;
+    
     if(a[i+1][j+1] == 1)
     sum++;
+    
     return sum;
 }
 // 지뢰 개수 표시
@@ -45,6 +55,7 @@ void game()
 	int how = 0;
 	printf("\t\t\t\t\t 지뢰의 갯수를 입력하세요: ");
     scanf("%d", &how);
+    
     if(how == 7 || how == 77)
     easter_egg();
    
@@ -52,8 +63,10 @@ void game()
     {
 		int x = rand()%10;
 		int y = rand()%10; 
+		
         if(a[x][y] == 1) 
         i--;
+        
         a[x][y] = 1;
 	}
 	// 랜덤하게 지뢰 설정
@@ -65,6 +78,7 @@ void game()
 	    printf("\t\t\t\t\t   0 1 2 3 4 5 6 7 8 9\n");
 	    
 	    int count = 0;
+	    
         for(y=0;y<10;y++)
         {
     	
@@ -73,34 +87,45 @@ void game()
             { 
                 if(a[x][y] == 0)
                     printf("●");
+                    
                 else if(a[x][y] == 1) 
                     printf("●");
+                    
                 else if(a[x][y] == 2 && bombsum(x,y) == 0)
                     printf("○");
+                    
                 else if(a[x][y] == 2 && bombsum(x,y) == 1)
                     printf("①");
+                    
                 else if(a[x][y] == 2 && bombsum(x,y) == 2)
                     printf("②");
+                    
 				else if(a[x][y] == 2 && bombsum(x,y) == 3)
                     printf("③");
+                    
 				else if(a[x][y] == 2 && bombsum(x,y) == 4)
                     printf("④");
+                    
 				else if(a[x][y] == 2 && bombsum(x,y) == 5)
-                    printf("⑤");			    
+                    printf("⑤");	
+							    
                 else if(a[x][y] == 2 && bombsum(x,y) == 6)
                     printf("⑥");
+                    
                 else if(a[x][y] == 2 && bombsum(x,y) == 7)
                     printf("⑦");   
+                    
 				else if(a[x][y] == 2 && bombsum(x,y) == 8)
                     printf("⑧");   
             }
             count++;
             printf("\n");
         }
-        
         printf("\n");
+        
         printf("\t\t\t\t\t x축 좌표 : ");
         scanf("%d",&xin);
+        
         printf("\t\t\t\t\t y축 좌표 : ");
         scanf("%d",&yin);
 		 
@@ -122,6 +147,7 @@ void game()
         if(a[xin][yin] == 2)
         {
         	int bomb;
+        	
             bomb = bombsum(xin,yin);
     	    continue; 
      	}
@@ -156,10 +182,11 @@ void easter_egg()
 	int how;
 	int gar;
 	int main();
-    { 
-	printf("                                                       \n");
-	printf("                                                       \n");
-	printf("                                                       \n");
+	
+    {   
+	printf("                                                                 \n");
+	printf("                                                                 \n");
+	printf("                                                                 \n");
 	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
 	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
 	printf("\t\t\t\t\t ■■      ■■  ■■      ■■  ■■      ■■        \n");	
@@ -172,8 +199,8 @@ void easter_egg()
 	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
 	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
 	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
-	printf("                                                       \n");
-	printf("                                                       \n");
+	printf("                                                                 \n");
+	printf("                                                                 \n");
     }
     
     printf("\t\t\t\t\t →계속하려면 아무 키나 입력하세요.\n\t\t\t\t\t");
@@ -185,6 +212,7 @@ void easter_egg()
 int main()
 {
     int choice;
+    
 	printf("\t\t\t\t\t-------------지뢰 찾기------------\n");
 	printf("\t\t\t\t\t                                  \n");
 	printf("\t\t\t\t\t                                  \n");
@@ -192,6 +220,7 @@ int main()
 	printf("\t\t\t\t\t-----------1. 게임 시작-----------\n");
 	printf("\t\t\t\t\t-----------2. 게임 설명-----------\n");
 	printf("\t\t\t\t\t-----------3. 게임 종료-----------\n\n\t\t\t\t\t");
+	
 	scanf("%d",&choice);
 	system("cls");
 	
@@ -204,7 +233,9 @@ int main()
     case 2:
 	    instruction();
 	    int menu; 
+	    
 	    scanf("%d", &menu);
+	    
     	if (menu == 0)
     	{
 		system("cls");
