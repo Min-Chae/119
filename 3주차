@@ -1,0 +1,219 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+
+int a[10][10]={0}; // 맵 
+int x,y; // 지뢰 
+int xin,yin; // 좌표 
+
+
+int bombsum();
+void game();
+void instruction();
+void easter_egg();
+ 
+ 
+int bombsum(int i, int j)
+{
+    int sum = 0;
+    if(a[i-1][j-1] == 1)
+    sum++;
+    if(a[i-1][j] == 1)
+    sum++;
+    if(a[i-1][j+1] == 1)
+    sum++;
+    if(a[i][j-1] == 1)
+    sum++;
+    if(a[i][j+1] == 1)
+    sum++;
+    if(a[i+1][j-1] == 1)
+    sum++;
+    if(a[i+1][j] == 1)
+    sum++;
+    if(a[i+1][j+1] == 1)
+    sum++;
+    return sum;
+}
+// 지뢰 개수 표시
+
+
+void game()
+{
+	srand(time(0));
+	
+	int how = 0;
+	printf("\t\t\t\t\t 지뢰의 갯수를 입력하세요: ");
+    scanf("%d", &how);
+    if(how == 7 || how == 77)
+    easter_egg();
+   
+    for(int i=1; i<=how; i++)
+    {
+		int x = rand()%10;
+		int y = rand()%10; 
+        if(a[x][y] == 1) 
+        i--;
+        a[x][y] = 1;
+	}
+	// 랜덤하게 지뢰 설정
+	
+	system("cls");
+	 
+	while(1)
+    {
+	    printf("\t\t\t\t\t   0 1 2 3 4 5 6 7 8 9\n");
+	    
+	    int count = 0;
+        for(y=0;y<10;y++)
+        {
+    	
+        	printf("\t\t\t\t\t %d", count);
+            for(x=0;x<10;x++)
+            { 
+                if(a[x][y] == 0)
+                    printf("●");
+                else if(a[x][y] == 1) 
+                    printf("●");
+                else if(a[x][y] == 2 && bombsum(x,y) == 0)
+                    printf("○");
+                else if(a[x][y] == 2 && bombsum(x,y) == 1)
+                    printf("①");
+                else if(a[x][y] == 2 && bombsum(x,y) == 2)
+                    printf("②");
+				else if(a[x][y] == 2 && bombsum(x,y) == 3)
+                    printf("③");
+				else if(a[x][y] == 2 && bombsum(x,y) == 4)
+                    printf("④");
+				else if(a[x][y] == 2 && bombsum(x,y) == 5)
+                    printf("⑤");			    
+                else if(a[x][y] == 2 && bombsum(x,y) == 6)
+                    printf("⑥");
+                else if(a[x][y] == 2 && bombsum(x,y) == 7)
+                    printf("⑦");   
+				else if(a[x][y] == 2 && bombsum(x,y) == 8)
+                    printf("⑧");   
+            }
+            count++;
+            printf("\n");
+        }
+        
+        printf("\n");
+        printf("\t\t\t\t\t x축 좌표 : ");
+        scanf("%d",&xin);
+        printf("\t\t\t\t\t y축 좌표 : ");
+        scanf("%d",&yin);
+		 
+		system("cls"); 
+		 
+		if (a[xin][yin] != 1)
+		{
+        a[xin][yin] = 2;
+        }
+        //열어본 칸 
+        
+        if(xin<0||xin>9||yin<0||yin>9)
+        {
+            printf("\t\t\t\t\tError! \n\n");
+            continue;
+        }
+        // 에러
+		 
+        if(a[xin][yin] == 2)
+        {
+        	int bomb;
+            bomb = bombsum(xin,yin);
+    	    continue; 
+     	}
+     	// 지뢰 X 
+	
+        if(a[xin][yin] == 1)
+        {
+            printf("Bomb!\n");
+            break; 
+        }
+        // 지뢰 O 
+		
+	}
+}
+//게임 실행 
+
+
+void instruction()
+{
+	printf("\t\t\t\t\t ●게임을 시작하기 전 지뢰의 개수를 입력\n");
+	printf("\t\t\t\t\t ●(맵의 크기는 10 x 10)\n");
+    printf("\t\t\t\t\t ●X좌표와 Y좌표를 차례대로 입력하면\n");
+    printf("\t\t\t\t\t ●해당 좌표 근처에 있는 지뢰만큼 숫자가 표시\n\n");
+    printf("\t\t\t\t\t → 메뉴로 돌아가려면 0 입력\n"); 
+	printf("\t\t\t\t\t → 종료하려면 아무 키나 입력");
+}
+//게임 설명
+
+
+void easter_egg()
+{
+	int how;
+	int gar;
+	int main();
+    { 
+	printf("                                                       \n");
+	printf("                                                       \n");
+	printf("                                                       \n");
+	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
+	printf("\t\t\t\t\t ■■■■■■■  ■■■■■■■  ■■■■■■■        \n");	
+	printf("\t\t\t\t\t ■■      ■■  ■■      ■■  ■■      ■■        \n");	
+	printf("\t\t\t\t\t ■■      ■■  ■■      ■■  ■■      ■■        \n");	
+	printf("\t\t\t\t\t ■■      ■■  ■■      ■■  ■■      ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("\t\t\t\t\t           ■■            ■■            ■■        \n");
+	printf("                                                       \n");
+	printf("                                                       \n");
+    }
+    
+    printf("\t\t\t\t\t →계속하려면 아무 키나 입력하세요.\n\t\t\t\t\t");
+    scanf("%d",&gar);
+}
+// 이스터에그
+ 
+
+int main()
+{
+    int choice;
+	printf("\t\t\t\t\t-------------지뢰 찾기------------\n");
+	printf("\t\t\t\t\t                                  \n");
+	printf("\t\t\t\t\t                                  \n");
+	printf("\t\t\t\t\t-----------0. 순위 보기-----------\n"); 
+	printf("\t\t\t\t\t-----------1. 게임 시작-----------\n");
+	printf("\t\t\t\t\t-----------2. 게임 설명-----------\n");
+	printf("\t\t\t\t\t-----------3. 게임 종료-----------\n\n\t\t\t\t\t");
+	scanf("%d",&choice);
+	system("cls");
+	
+    switch(choice)
+    {
+    case 1:
+    	game();
+        break;
+        
+    case 2:
+	    instruction();
+	    int menu; 
+	    scanf("%d", &menu);
+    	if (menu == 0)
+    	{
+		system("cls");
+    	main();
+        }
+        
+    case 3:
+	    break; 
+  
+    return 0;
+	}
+}
